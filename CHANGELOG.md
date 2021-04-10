@@ -21,3 +21,7 @@
 ## 0.1.0
 
 * Add null safety
+
+## 0.1.1
+
+* Update FireStore dependency to 1.0.3

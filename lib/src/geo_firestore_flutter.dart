@@ -97,15 +97,15 @@ class GeoFirestore {
       snapshots.forEach((snapshot) {
         snapshot.docs.forEach((doc) {
           if (addDistance || exact) {
-            final latLng = doc.data()?['l'];
+            final latLng = doc.data()['l'];
             final distance = GeoUtils.distance(center, GeoPoint(latLng[0], latLng[1]));
             if (exact) {
               if (distance <= radius) {
-                doc.data()?['distance'] = distance;
+                doc.data()['distance'] = distance;
                 documents.add(doc);
               }
             } else {
-              doc.data()?['distance'] = distance;
+              doc.data()['distance'] = distance;
               documents.add(doc);
             }
           } else {
