@@ -9,9 +9,9 @@ import 'package:geo_firestore_flutter/src/geo_utils.dart';
 /// A GeoFirestore instance is used to store and query geo location data in Firestore.
 ///
 class GeoFirestore {
-  late CollectionReference collectionReference;
+  late CollectionReference<Map<String, dynamic>> collectionReference;
 
-  GeoFirestore(CollectionReference collectionReference) {
+  GeoFirestore(CollectionReference<Map<String, dynamic>> collectionReference) {
     this.collectionReference = collectionReference;
   }
 
@@ -20,7 +20,7 @@ class GeoFirestore {
   ///
   static GeoPoint? getLocationValue(DocumentSnapshot documentSnapshot) {
     try {
-      final data = documentSnapshot.data();
+      final data = documentSnapshot.data() as Map<String, dynamic>;
       if (data != null && data['l'] != null) {
         final location = data['l'];
         final latitude = location[0];
@@ -79,7 +79,7 @@ class GeoFirestore {
   /// [addDistance] Whether to process data and add distance property to returned documents, defaults to True.
   /// [exact]       Whether to process data and remove documents that are further than specified radius, defaults to True.
   ///
-  Future<List<DocumentSnapshot>> getAtLocation(
+  Future<List<DocumentSnapshot<Map<String, dynamic>>>> getAtLocation(
     GeoPoint center,
     double radius, {
     bool exact = true,
@@ -92,7 +92,7 @@ class GeoFirestore {
 
     // Await the completion of all the futures
     try {
-      List<DocumentSnapshot> documents = [];
+      List<DocumentSnapshot<Map<String, dynamic>>> documents = [];
       final snapshots = await Future.wait(futures);
       snapshots.forEach((snapshot) {
         snapshot.docs.forEach((doc) {

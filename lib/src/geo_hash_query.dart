@@ -172,7 +172,7 @@ class GeoHashQuery {
     throw FormatException("Can't join these two queries: $this, $other");
   }
 
-  Query createFirestoreQuery(GeoFirestore geoFirestore) {
+  Query<Map<String, dynamic>> createFirestoreQuery(GeoFirestore geoFirestore) {
     return geoFirestore.collectionReference
         .orderBy('g')
         .startAt([this.startValue]).endAt([this.endValue]);
