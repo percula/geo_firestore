@@ -1,6 +1,8 @@
 # GeoFirestore
 GeoFirestore implementation for Flutter to do location based queries with Firestore.
 
+This is a fork of [joscmw95/geo_firestore](https://github.com/joscmw95/geo_firestore). The primary difference between the repositories is how the geo data is structured in the database (see *Database Structure*).
+
 ### GeoFirestore
 
 A `GeoFirestore` object is used to read and write geo location data to your Firestore database and to create queries. To create a new `GeoFirestore` instance you need to attach it to a Firestore collection reference:
