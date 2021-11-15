@@ -47,4 +47,20 @@ documents.forEach((document) {
 });
 ```
 
+### Database Structure
+
+GeoFirestore writes/reads two fields from Firestore objects: "g" (geohash) and "l" (latitude/longitude):
+
+```json
+{
+  "g": "dr8vyzzwqd",
+  "l": [
+    43.2419, 
+    -77.3881
+  ]
+}
+```
+
+
+
 This library is inspired mostly a port of [GeoFirestore-Android](https://github.com/imperiumlabs/GeoFirestore-Android).
