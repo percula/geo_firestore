@@ -29,3 +29,7 @@
 ## 0.1.2
 
 * Update FireStore dependency to 2.2.2
+
+## 0.1.3
+
+* Update FireStore dependency to 3.1.0
