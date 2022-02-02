@@ -24,8 +24,8 @@ class GeoHash {
     final longitudeBase2 = (longitude + 180) * (pow(2.0, 52) / 360);
     final longitudeBits = (precision ~/ 2) * 5 + (precision % 2) * 3;
     final latitudeBits = precision * 5 - longitudeBits;
-    var longitudeCode = longitudeBase2.floor() >> (52 - longitudeBits);
-    var latitudeCode = latitudeBase2.floor() >> (52 - latitudeBits);
+    var longitudeCode = (BigInt.from(longitudeBase2.floor()) >> (52 - longitudeBits)).toInt();
+    var latitudeCode = (BigInt.from(latitudeBase2.floor()) >> (52 - latitudeBits)).toInt();
 
     final stringBuffer = [];
     for (var localPrecision = precision; localPrecision > 0; localPrecision--) {
