@@ -1,3 +1,7 @@
+## 0.1.6
+
+* Update FireStore dependency to 4.0.3
+
 ## 0.1.5
 
 * Update FireStore dependency to 3.1.7
