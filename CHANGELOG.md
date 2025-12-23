@@ -1,3 +1,12 @@
+## 0.1.8
+
+* Support FireStore versions 4.0.0 through 6.0.0+
+
+## 0.1.7
+
+* Support FireStore versions 4.0.0 through 5.0.0+
+
+
 ## 0.1.6
 
 * Update FireStore dependency to 4.0.3
