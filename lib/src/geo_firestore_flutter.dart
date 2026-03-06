@@ -71,6 +71,53 @@ class GeoFirestore {
     return geoPoint;
   }
 
+  /// Returns documents within [radiusKm] kilometers of [center] using any
+  /// Firestore [Query] (works with both `collection` and `collectionGroup`).
+  ///
+  /// Unlike [getAtLocation], this accepts a generic [Query] instead of using
+  /// the instance's [collectionReference]. Results are deduplicated and
+  /// filtered by exact distance; document data is not mutated.
+  static Future<List<DocumentSnapshot<Map<String, dynamic>>>> queryAtLocation(
+    Query<Map<String, dynamic>> query,
+    GeoPoint center,
+    double radiusKm,
+  ) async {
+    final radiusMeters = GeoUtils.capRadius(radiusKm) * 1000;
+    final geoQueries = GeoHashQuery.queriesAtLocation(center, radiusMeters);
+
+    final futures = geoQueries.map((geoQuery) => query
+        .orderBy('g')
+        .startAt([geoQuery.startValue])
+        .endAt([geoQuery.endValue])
+        .get());
+
+    final snapshots = await Future.wait(futures);
+
+    // Deduplicate (overlapping geohash ranges) and filter by exact distance.
+    final seen = <String>{};
+    final results = <DocumentSnapshot<Map<String, dynamic>>>[];
+
+    for (final querySnapshot in snapshots) {
+      for (final doc in querySnapshot.docs) {
+        if (!seen.add(doc.reference.path)) continue;
+
+        final data = doc.data();
+        final l = data['l'];
+        if (l == null || l is! List || l.length < 2) continue;
+
+        final docLat = (l[0] as num).toDouble();
+        final docLon = (l[1] as num).toDouble();
+        final distance = GeoUtils.distance(center, GeoPoint(docLat, docLon));
+
+        if (distance <= radiusKm) {
+          results.add(doc);
+        }
+      }
+    }
+
+    return results;
+  }
+
   ///
   /// Returns the documents centered at a given location and with the given radius.
   /// [center]      The center of the query
